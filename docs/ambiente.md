@@ -1,4 +1,4 @@
-# Ambientes de desenvolvimento do Rodovolt
+# Ambientes de desenvolvimento do SincroVolt
 
 Três ambientes, cada um com um papel, no mesmo modelo do Desmalha. O que vale para os
 três é o **verificador**: ele lê as versões que o repo declara (`.fvmrc`,
@@ -6,7 +6,7 @@ três é o **verificador**: ele lê as versões que o repo declara (`.fvmrc`,
 
 | Ambiente | Para quê | Como se monta |
 |---|---|---|
-| **Nuvem** (Claude Code, Ubuntu 24.04) | núcleo, `analyze`, testes, docs | ambiente `rodovolt` com `tool/setup_env.sh` como setup script |
+| **Nuvem** (Claude Code, Ubuntu 24.04) | núcleo, `analyze`, testes, docs | ambiente `SincroVolt` com `tool/setup_env.sh` como setup script |
 | **Windows** + Galaxy S26 Ultra | UI, hot reload, Bluetooth real com o ELM327 | seção 2 |
 | **CI** (GitHub Actions, `verify`) | portão de merge | `.github/workflows/verify.yml` |
 
@@ -17,12 +17,12 @@ três é o **verificador**: ele lê as versões que o repo declara (`.fvmrc`,
 
 ## 1. Nuvem (sessões do Claude Code)
 
-**Ambiente:** `rodovolt` (pessoal), criado em claude.ai/code → seletor de ambiente →
+**Ambiente:** `SincroVolt` (pessoal), criado em claude.ai/code → seletor de ambiente →
 **New environment**.
 
 | Campo | Valor |
 |---|---|
-| Name | `rodovolt` |
+| Name | `SincroVolt` |
 | Network access | **Limited**, com **Allow package managers** marcado |
 | Allowed domains | `drive.usercontent.google.com` |
 | Environment variables | nenhuma |
@@ -53,12 +53,12 @@ Na sessão:
 ```
 bash tool/setup_env.sh          # idempotente: no ambiente em cache só faz pub get
 fvm dart run tool/verificar_ambiente.dart --sem-android
-cd packages/rodovolt_core && fvm dart test
-cd apps/rodovolt_app && fvm flutter analyze && fvm flutter test
+cd packages/sincrovolt_core && fvm dart test
+cd apps/sincrovolt_app && fvm flutter analyze && fvm flutter test
 ```
 Se um download falhar, o script para e diz o domínio. Reporte o domínio; não use mirror.
 
-Build de APK na nuvem é opcional: `RODOVOLT_COM_ANDROID=1 bash tool/setup_env.sh`
+Build de APK na nuvem é opcional: `SINCROVOLT_COM_ANDROID=1 bash tool/setup_env.sh`
 instala JDK 17 e Android SDK (precisa de `dl.google.com`, `maven.google.com` e
 `services.gradle.org`, todos no allowlist padrão).
 
@@ -67,7 +67,7 @@ instala JDK 17 e Android SDK (precisa de `dl.google.com`, `maven.google.com` e
 Máquina de UI. O `tool/setup_env.sh` é só Linux; no Windows o SDK Android vem do Android
 Studio. O passo a passo detalhado de instalação (JDK 17, Android Studio, FVM 4.1.2 por
 binário, variáveis, plugins da IDE) é o mesmo do Desmalha (`docs/ambiente-windows.md`
-daquele repo); se a máquina já roda o Desmalha, ela já roda o Rodovolt.
+daquele repo); se a máquina já roda o Desmalha, ela já roda o SincroVolt.
 
 ### 2.1 Conferir a máquina (PowerShell, na raiz do repo)
 
@@ -118,7 +118,7 @@ O Edge também aparece como dispositivo (web), então diga qual é o alvo. O `-d
 começo do id que o `adb devices` mostrou:
 
 ```powershell
-cd apps\rodovolt_app
+cd apps\sincrovolt_app
 fvm flutter run -d adb-
 ```
 Com o app aberto no celular, edite `lib/main.dart` (ex.: o texto do título), salve e

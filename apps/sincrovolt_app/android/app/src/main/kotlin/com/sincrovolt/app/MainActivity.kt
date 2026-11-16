@@ -1,4 +1,4 @@
-package com.rodovolt.app
+package com.sincrovolt.app
 
 import io.flutter.embedding.android.FlutterActivity
 

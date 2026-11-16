@@ -1,4 +1,4 @@
-// tool/verificar_ambiente.dart — verificador de ambiente de build do Rodovolt.
+// tool/verificar_ambiente.dart — verificador de ambiente de build do SincroVolt.
 //
 // Adaptado do verificador do Desmalha (mesmo modelo de 3 ambientes).
 //
@@ -57,7 +57,7 @@ Future<void> main(List<String> args) async {
   }
 
   final r = _Relatorio();
-  stdout.writeln('Rodovolt — verificação de ambiente${semAndroid ? " (sem Android)" : ""}');
+  stdout.writeln('SincroVolt — verificação de ambiente${semAndroid ? " (sem Android)" : ""}');
   stdout.writeln('repo: ${raiz.path}');
   stdout.writeln('so:   ${Platform.operatingSystem}');
   stdout.writeln('');
@@ -137,7 +137,7 @@ _Esperado _lerEsperado(Directory raiz, _Relatorio r) {
   }
 
   final gradle = File(
-    '${raiz.path}${sep}apps${sep}rodovolt_app${sep}android${sep}app${sep}build.gradle.kts',
+    '${raiz.path}${sep}apps${sep}sincrovolt_app${sep}android${sep}app${sep}build.gradle.kts',
   );
   if (gradle.existsSync()) {
     final texto = gradle.readAsStringSync();
@@ -147,7 +147,7 @@ _Esperado _lerEsperado(Directory raiz, _Relatorio r) {
     final min = RegExp(r'minSdk\s*=\s*(\d+)').firstMatch(texto)?.group(1);
     e.minSdk = min == null ? null : int.tryParse(min);
   } else {
-    r.falha('build.gradle.kts', 'ausente em apps/rodovolt_app/android/app/.');
+    r.falha('build.gradle.kts', 'ausente em apps/sincrovolt_app/android/app/.');
   }
 
   return e;
@@ -386,12 +386,12 @@ void _verificarAndroidSdk(_Esperado e, _Relatorio r) {
 void _verificarPinsDoGradle(_Esperado e, _Relatorio r) {
   // Decisões travadas no board. Um `flutter create` futuro, ou um merge desatento,
   // reescreve build.gradle.kts com os padrões do template e rebaixa as duas em silêncio.
-  if (e.applicationId == 'com.rodovolt.app') {
+  if (e.applicationId == 'com.sincrovolt.app') {
     r.ok('applicationId', e.applicationId!);
   } else {
     r.falha(
       'applicationId',
-      'está "${e.applicationId ?? "?"}", esperado "com.rodovolt.app" (decisão travada, EVAPP-20).',
+      'está "${e.applicationId ?? "?"}", esperado "com.sincrovolt.app" (decisão travada, EVAPP-20).',
     );
   }
 

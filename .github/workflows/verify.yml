@@ -1,4 +1,4 @@
-# CI "verify" — portão de merge do Rodovolt.
+# CI "verify" — portão de merge do SincroVolt.
 # Roda o MESMO bootstrap da nuvem (tool/setup_env.sh, sem Android) e os mesmos comandos
 # que o CLAUDE.md manda rodar antes de todo PR. Se este job não passar, não há merge.
 name: verify
@@ -30,7 +30,7 @@ jobs:
           path: |
             ~/fvm
             ~/.pub-cache
-          key: rodovolt-${{ runner.os }}-${{ hashFiles('tool/setup_env.sh', '.fvmrc') }}
+          key: sincrovolt-${{ runner.os }}-${{ hashFiles('tool/setup_env.sh', '.fvmrc') }}
 
       - name: Bootstrap (tool/setup_env.sh, sem Android)
         run: bash tool/setup_env.sh
@@ -47,14 +47,14 @@ jobs:
         run: bash tool/varrer_segredos.sh
 
       - name: Núcleo (Dart puro) — analyze e testes
-        working-directory: packages/rodovolt_core
+        working-directory: packages/sincrovolt_core
         run: |
           source ../../tool/env
           fvm dart analyze --fatal-infos
           fvm dart test
 
       - name: App — analyze e testes
-        working-directory: apps/rodovolt_app
+        working-directory: apps/sincrovolt_app
         run: |
           source ../../tool/env
           fvm flutter analyze --fatal-infos

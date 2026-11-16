@@ -1,6 +1,6 @@
 # CLAUDE.md — Contexto do projeto para o Claude Code
 
-## O que é o Rodovolt
+## O que é o SincroVolt
 App mobile de **gestão de carros eletrificados** (BEV, PHEV e HEV) no Brasil. Promessa:
 "Você dirige; o app anota, calcula e avisa". O app coleta dados do carro em camadas (API
 conectada → OBD-II → redes de recarga → celular → NFC-e/OCR → Open Finance → bases
@@ -20,12 +20,12 @@ públicas), usa a melhor fonte disponível e calcula custo, consumo e saúde da 
 ## Decisões travadas (não reabrir, não "melhorar")
 | Decisão | Valor | Origem |
 |---|---|---|
-| Nome do produto | **Rodovolt** | EVAPP-20 |
-| `applicationId` / bundle id | **`com.rodovolt.app`** | EVAPP-20 |
+| Nome do produto | **SincroVolt** (supera "Rodovolt" e "Voltis"; renomeação no EVAPP-74) | EVAPP-20 |
+| `applicationId` / bundle id | **`com.sincrovolt.app`** | EVAPP-20 |
 | App mobile | **Flutter 3.44.7 (stable)**, pinado por **FVM** (`.fvmrc` na raiz) | EVAPP-24 |
 | Bluetooth Clássico (SPP) | canal de plataforma **próprio em Kotlin** atrás de interface Dart | EVAPP-24 |
 | BLE | `universal_ble` (BSD-3) | EVAPP-24 |
-| Núcleo | **Dart puro** (`packages/rodovolt_core`): ELM327/PIDs, custos, regras | EVAPP-24 |
+| Núcleo | **Dart puro** (`packages/sincrovolt_core`): ELM327/PIDs, custos, regras | EVAPP-24 |
 | Pacotes vetados por licença | `flutter_blue_plus` (comercial paga), `flutter_blue_classic` (GPL-3.0) | EVAPP-24 |
 | Backend e hospedagem | **a decidir (EVAPP-25)** | — |
 | Local-first × nuvem | **a decidir (EVAPP-26)** | — |
@@ -36,8 +36,8 @@ públicas), usa a melhor fonte disponível e calcula custo, consumo e saúde da 
 ## Mapa de pastas
 ```
 .fvmrc                       # pin do Flutter — só ele é versionado; .fvm/ não
-apps/rodovolt_app/           # app Flutter: só orquestra e apresenta (EVAPP-36)
-packages/rodovolt_core/      # Dart puro: parser ELM327/PIDs, motor de custos, regras
+apps/sincrovolt_app/         # app Flutter: só orquestra e apresenta (EVAPP-36)
+packages/sincrovolt_core/    # Dart puro: parser ELM327/PIDs, motor de custos, regras
 tool/setup_env.sh            # bootstrap idempotente Linux (nuvem e CI), versões fixadas
 tool/verificar_ambiente.dart # verifica se o ambiente bate com o que o repo declara
 tool/varrer_segredos.sh      # varredura de segredos (CI e antes de todo PR)
@@ -52,8 +52,8 @@ Os três ambientes (nuvem, Windows com o Galaxy S26, CI) estão em `docs/ambient
 bash tool/setup_env.sh && source tool/env      # Linux: nuvem e CI
 fvm dart run tool/verificar_ambiente.dart       # confere o ambiente (todos)
 bash tool/varrer_segredos.sh                    # antes de todo commit/PR
-cd packages/rodovolt_core && fvm dart test
-cd apps/rodovolt_app && fvm flutter analyze && fvm flutter test
+cd packages/sincrovolt_core && fvm dart test
+cd apps/sincrovolt_app && fvm flutter analyze && fvm flutter test
 ```
 Se um download essencial falhar na nuvem, **pare e diga exatamente qual domínio foi
 bloqueado**. Não contorne com mirror não oficial.

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# tool/setup_env.sh — bootstrap idempotente do ambiente Linux do Rodovolt (nuvem e CI).
+# tool/setup_env.sh — bootstrap idempotente do ambiente Linux do SincroVolt (nuvem e CI).
 #
 # Adaptado do bootstrap do Desmalha. Instala/garante, com versões FIXADAS:
 #   - Flutter 3.44.7 (tarball oficial de storage.googleapis.com, sha256 conferido),
 #     que embute o Dart;
 #   - FVM 4.1.2 (pub.dev), apontando para esse Flutter;
-#   - opcional (RODOVOLT_COM_ANDROID=1): JDK 17 (apt) e Android SDK (dl.google.com).
+#   - opcional (SINCROVOLT_COM_ANDROID=1): JDK 17 (apt) e Android SDK (dl.google.com).
 # Por padrão NÃO instala Android: nuvem e CI rodam núcleo, analyze e testes, que não
 # precisam de SDK Android. Build de APK e aparelho ficam no Windows (docs/ambiente.md).
 #
@@ -39,7 +39,7 @@ FVM_CACHE="${FVM_CACHE_PATH:-$HOME/fvm}"
 export ANDROID_HOME="${ANDROID_HOME:-$HOME/android-sdk}"
 FLUTTER_DIR="$FVM_CACHE/versions/$FLUTTER_VERSION"
 PUB_BIN="$HOME/.pub-cache/bin"
-COM_ANDROID="${RODOVOLT_COM_ANDROID:-0}"
+COM_ANDROID="${SINCROVOLT_COM_ANDROID:-0}"
 
 log()  { printf '\n==> %s\n' "$*"; }
 fail() { printf '\nERRO: %s\n' "$*" >&2; exit 1; }
@@ -127,7 +127,7 @@ if [ "$COM_ANDROID" = "1" ]; then
     || fail "sdkmanager --install falhou (rede/licenças?)."
   "$FLUTTER_DIR/bin/flutter" config --android-sdk "$ANDROID_HOME" >/dev/null
 else
-  log "Android PULADO (padrão). Para incluir: RODOVOLT_COM_ANDROID=1 bash tool/setup_env.sh"
+  log "Android PULADO (padrão). Para incluir: SINCROVOLT_COM_ANDROID=1 bash tool/setup_env.sh"
 fi
 
 # --------------------------------------------- PATH para as próximas shells
@@ -144,17 +144,17 @@ if [ -n "$REPO_ROOT" ]; then
 fi
 if [ "$(id -u)" -eq 0 ]; then
   # nuvem: vale para toda shell, sem precisar de source
-  printf '# Rodovolt — gerado por tool/setup_env.sh\n%s\n' "$LINHAS" > /etc/profile.d/rodovolt.sh
+  printf '# SincroVolt — gerado por tool/setup_env.sh\n%s\n' "$LINHAS" > /etc/profile.d/sincrovolt.sh
   for b in flutter dart; do ln -sf "$FLUTTER_DIR/bin/$b" "/usr/local/bin/$b"; done
   ln -sf "$PUB_BIN/fvm" /usr/local/bin/fvm
-  grep -q 'profile.d/rodovolt.sh' "$HOME/.bashrc" 2>/dev/null || echo '. /etc/profile.d/rodovolt.sh' >> "$HOME/.bashrc"
+  grep -q 'profile.d/sincrovolt.sh' "$HOME/.bashrc" 2>/dev/null || echo '. /etc/profile.d/sincrovolt.sh' >> "$HOME/.bashrc"
 fi
 
 # -------------------------------------------- dependências do repo (se houver)
 if [ -n "$REPO_ROOT" ]; then
   log "pub get (núcleo e app)"
-  (cd "$REPO_ROOT/packages/rodovolt_core" && fvm dart pub get >/dev/null) || fail "pub get do rodovolt_core falhou."
-  (cd "$REPO_ROOT/apps/rodovolt_app" && fvm flutter pub get >/dev/null) || fail "pub get do rodovolt_app falhou."
+  (cd "$REPO_ROOT/packages/sincrovolt_core" && fvm dart pub get >/dev/null) || fail "pub get do sincrovolt_core falhou."
+  (cd "$REPO_ROOT/apps/sincrovolt_app" && fvm flutter pub get >/dev/null) || fail "pub get do sincrovolt_app falhou."
 fi
 
 log "ambiente pronto (Flutter $FLUTTER_VERSION, FVM $FVM_VERSION, Android: $([ "$COM_ANDROID" = 1 ] && echo sim || echo não))"
