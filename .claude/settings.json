@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(source tool/env)",
+      "Bash(bash tool/setup_env.sh)",
+      "Bash(bash tool/varrer_segredos.sh)",
+      "Bash(bash tool/testar_varredura.sh)",
+
+      "Bash(git status *)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(git show *)",
+      "Bash(git branch *)",
+      "Bash(git ls-files *)",
+      "Bash(git cherry *)",
+      "Bash(git fetch *)",
+      "Bash(git switch *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+
+      "Bash(fvm flutter analyze *)",
+      "Bash(fvm flutter test *)",
+      "Bash(fvm flutter pub get *)",
+      "Bash(fvm flutter doctor *)",
+      "Bash(fvm dart analyze *)",
+      "Bash(fvm dart test *)",
+      "Bash(fvm dart run tool/verificar_ambiente.dart *)",
+      "Bash(fvm dart format *)",
+      "Bash(fvm dart pub get *)"
+    ]
+  }
+}

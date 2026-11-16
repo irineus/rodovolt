@@ -1,0 +1,58 @@
+# --- Flutter / Dart ---
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+.idea/
+.vscode/
+coverage/
+
+# FVM: só o .fvmrc é versionado
+.fvm/
+
+# pubspec.lock é versionado no app (build reproduzível); pacotes Dart puros não
+packages/*/pubspec.lock
+
+# Gerado por tool/setup_env.sh (caminhos da máquina)
+tool/env
+
+# --- Android ---
+**/android/.gradle/
+**/android/local.properties
+**/android/captures/
+**/android/app/release/
+**/android/.kotlin/
+
+# --- iOS / macOS ---
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/Generated.xcconfig
+**/DerivedData/
+*.xcuserstate
+
+# --- Dados reais do carro: logs brutos NUNCA no repo ---
+# Só entram em dados/fixtures/, sem GPS e com VIN mascarado (CLAUDE.md, regra 3).
+dados/brutos/
+*.csv
+!dados/fixtures/**/*.csv
+
+# --- Segredos: NUNCA no repo ---
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+key.properties
+.env
+.env.*
+**/google-services.json
+**/GoogleService-Info.plist
+.claude/settings.local.json
+
+# --- Ruído de SO ---
+.DS_Store
+Thumbs.db
