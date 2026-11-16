@@ -6,7 +6,13 @@ description: Avança o board do Rodovolt (app de gestão de carros eletrificados
 # Board do Rodovolt no Notion
 
 Versão de repositório da skill de conta `proximo-card-carros-eletrificados`. As duas
-devem dizer a mesma coisa; se divergirem, avise o usuário e siga a mais recente.
+devem dizer a mesma coisa. **Se divergirem, vale esta (versionada no repo)**, salvo o que
+a página Decisões vigentes disser em contrário; avise o usuário da divergência em uma
+linha, para ele atualizar a skill da conta. Ex.: a skill da conta ainda chama o produto de
+"Voltis" (nome superado no EVAPP-20) — use "Rodovolt".
+
+Numa sessão aberta fora da pasta do repo, `/proximo-card` não aparece na lista de skills:
+leia este arquivo direto.
 
 **Pré-requisito:** ferramentas do Notion MCP na sessão. Se não aparecerem, procure-as
 (tool search por "notion fetch", "notion query data sources", "notion update page",
