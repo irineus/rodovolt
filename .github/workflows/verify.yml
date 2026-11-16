@@ -1,0 +1,61 @@
+# CI "verify" — portão de merge do Rodovolt.
+# Roda o MESMO bootstrap da nuvem (tool/setup_env.sh, sem Android) e os mesmos comandos
+# que o CLAUDE.md manda rodar antes de todo PR. Se este job não passar, não há merge.
+name: verify
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache do Flutter e do pub (chave = versões fixadas no bootstrap)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/fvm
+            ~/.pub-cache
+          key: rodovolt-${{ runner.os }}-${{ hashFiles('tool/setup_env.sh', '.fvmrc') }}
+
+      - name: Bootstrap (tool/setup_env.sh, sem Android)
+        run: bash tool/setup_env.sh
+
+      - name: Verificador de ambiente
+        run: |
+          source tool/env
+          fvm dart run tool/verificar_ambiente.dart --sem-android
+
+      - name: Varredura de segredos — prova negativa
+        run: bash tool/testar_varredura.sh
+
+      - name: Varredura de segredos — repositório
+        run: bash tool/varrer_segredos.sh
+
+      - name: Núcleo (Dart puro) — analyze e testes
+        working-directory: packages/rodovolt_core
+        run: |
+          source ../../tool/env
+          fvm dart analyze --fatal-infos
+          fvm dart test
+
+      - name: App — analyze e testes
+        working-directory: apps/rodovolt_app
+        run: |
+          source ../../tool/env
+          fvm flutter analyze --fatal-infos
+          fvm flutter test
