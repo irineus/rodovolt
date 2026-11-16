@@ -3,6 +3,6 @@ import 'package:test/test.dart';
 
 void main() {
   test('o núcleo carrega sem Flutter', () {
-    expect(nomeDoNucleo, 'rodovolt_core');
+    expect(nomeDoNucleo, 'PROVA NEGATIVA — este teste tem de falhar no CI');
   });
 }
