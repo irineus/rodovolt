@@ -1,0 +1,11 @@
+name: rodovolt_core
+description: Núcleo do Rodovolt em Dart puro — parser ELM327/PIDs, motor de custos e regras. Sem Flutter.
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.12.2
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6
