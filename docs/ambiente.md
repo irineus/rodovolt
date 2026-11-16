@@ -78,35 +78,48 @@ fvm dart run tool/verificar_ambiente.dart
 Saída esperada no fim: `Ambiente OK — 0 aviso(s).` (avisos sobre o `flutter` do PATH
 são aceitáveis se você sempre usa `fvm flutter`).
 
-### 2.2 Galaxy S26 Ultra por depuração sem fio
+### 2.2 Galaxy S26 Ultra por depuração por Wi-Fi
+
+Nomes de menu da One UI em PT-BR, conferidos num S26 Ultra (Android 17) em 16/11/2026.
+Fora da Samsung o item costuma se chamar "Depuração sem fio".
 
 1. No celular: **Configurações → Sobre o telefone → Informações do software** → toque 7
    vezes em **Número de compilação** (ativa as Opções do desenvolvedor).
-2. **Configurações → Opções do desenvolvedor → Depuração sem fio** → ligar. Celular e PC na
-   mesma rede Wi-Fi.
-3. Toque em **Parear dispositivo com código de pareamento**; anote IP:porta e o código.
-4. No PowerShell:
+2. **Configurações → Opções do desenvolvedor → Depuração → Depuração por Wi-Fi** → ligar
+   (toque no texto, não só na chave, para abrir a tela). Celular e PC na mesma rede Wi-Fi.
+3. Toque em **Parear o dispositivo com um código de pareamento**. Abre uma janela com o
+   **código de 6 dígitos** (gerado pelo celular, muda a cada abertura) e um **IP:porta de
+   pareamento**. Deixe a janela aberta.
+4. No PowerShell, com o IP:porta **dessa janela**:
    ```powershell
-   adb pair 192.168.0.10:37123
+   adb pair 192.168.1.2:39921
    ```
-   (troque pelo IP:porta da tela de pareamento; digite o código quando pedir)
-5. Na tela **Depuração sem fio**, anote o IP:porta de **conexão** (é outra porta) e:
+   Em `Enter pairing code:` digite os 6 dígitos. Esperado:
+   `Successfully paired to 192.168.1.2:39921 [guid=adb-…]`.
+5. Depois de pareado, o PC aparece em **Dispositivos pareados** como "Conectados no
+   momento": o adb conecta sozinho (mDNS), **sem `adb connect`**. Confira:
    ```powershell
-   adb connect 192.168.0.10:41234
-   fvm flutter devices
+   adb devices
    ```
-   Saída esperada: uma linha com o modelo do aparelho (código `SM-S…`), o IP:porta e
-   `android-arm64`.
+   Esperado: uma linha `adb-<serial>-<sufixo>._adb-tls-connect._tcp  device`.
+   Se a lista vier vazia, conecte à mão pelo **Endereço IP e porta** do topo da tela
+   **Depuração por Wi-Fi** (outra porta, a de conexão). Não faça os dois: o aparelho
+   aparece duplicado e o `flutter run` passa a perguntar qual usar.
 6. Conferir com o aparelho como alvo obrigatório:
    ```powershell
    fvm dart run tool/verificar_ambiente.dart --android
    ```
+   Esperado no fim: `[ok]    Dispositivo Android: SM S948B (…)` e
+   `Ambiente OK — 0 aviso(s).`
 
 ### 2.3 Rodar o app com hot reload
 
+O Edge também aparece como dispositivo (web), então diga qual é o alvo. O `-d` aceita o
+começo do id que o `adb devices` mostrou:
+
 ```powershell
 cd apps\rodovolt_app
-fvm flutter run -d <id-do-aparelho>
+fvm flutter run -d adb-
 ```
 Com o app aberto no celular, edite `lib/main.dart` (ex.: o texto do título), salve e
 aperte `r` no terminal. Esperado: `Reloaded 1 of N libraries in ...ms` e a mudança na tela
