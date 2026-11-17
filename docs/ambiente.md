@@ -6,7 +6,7 @@ três é o **verificador**: ele lê as versões que o repo declara (`.fvmrc`,
 
 | Ambiente | Para quê | Como se monta |
 |---|---|---|
-| **Nuvem** (Claude Code, Ubuntu 24.04) | núcleo, `analyze`, testes, docs | ambiente `SincroVolt` com `tool/setup_env.sh` como setup script |
+| **Nuvem** (Claude Code, Ubuntu 24.04) | núcleo, `analyze`, testes, docs | ambiente `SincroVolt` com `tool/setup_nuvem.sh` como setup script |
 | **Windows** + Galaxy S26 Ultra | UI, hot reload, Bluetooth real com o ELM327 | seção 2 |
 | **CI** (GitHub Actions, `verify`) | portão de merge | `.github/workflows/verify.yml` |
 
@@ -23,12 +23,19 @@ três é o **verificador**: ele lê as versões que o repo declara (`.fvmrc`,
 | Campo | Valor |
 |---|---|
 | Name | `SincroVolt` |
-| Network access | **Limited**, com **Allow package managers** marcado |
-| Allowed domains | `drive.usercontent.google.com` |
+| Network access | **Unrestricted** (decisão do usuário, 17/11/2026, EVAPP-74) |
+| Allowed domains | não se aplica (Unrestricted) |
 | Environment variables | nenhuma |
-| Setup script | conteúdo de `tool/setup_env.sh` (**Choose file**) |
+| Setup script | conteúdo de `tool/setup_nuvem.sh` (**Choose file**) |
 
-**Por que esses hosts.** Medido num Ubuntu 24.04 limpo com proxy registrando cada
+**Por que `setup_nuvem.sh` e não `setup_env.sh`.** O campo do setup script aceita no máximo
+100 linhas, e o `setup_env.sh` tem mais. O `setup_nuvem.sh` é a parte dele que roda na
+nuvem: mesmas versões fixadas (o verificador reprova se divergirem), sem o bloco Android
+(o script não enxerga as variáveis do ambiente) e sem `pub get` (roda fora do repo).
+**Mudou versão no `setup_env.sh`? Mude no `setup_nuvem.sh` e cole-o de novo no ambiente.**
+
+**Hosts que o bootstrap usa** (o ambiente é Unrestricted, mas a lista vale se um dia
+voltar a Limited). Medido num Ubuntu 24.04 limpo com proxy registrando cada
 conexão (EVAPP-36): o bootstrap sem Android só acessa **`storage.googleapis.com`**
 (tarball do Flutter) e **`pub.dev`** (FVM e pacotes), ambos no allowlist padrão do
 "Allow package managers". O único host fora do padrão é
@@ -41,7 +48,7 @@ Números da medição (16/11/2026): setup do zero **118 s** (abaixo do limite de
 o ambiente entrar em cache); `pub get` dentro do repo 33 s; re-execução 2 s.
 
 **O setup script roda antes da sessão, como root e sem o repo garantido.** Por isso o
-`tool/setup_env.sh` tem todas as versões dentro dele, não depende do repo, e cria links em
+`tool/setup_nuvem.sh` (e o `tool/setup_env.sh`) tem todas as versões dentro dele, não depende do repo, e cria links em
 `/usr/local/bin` para `flutter`, `dart` e `fvm`. O ambiente fica em cache por ~7 dias; mudar
 o script ou os hosts reconstrói o cache.
 

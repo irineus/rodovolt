@@ -39,6 +39,7 @@ públicas), usa a melhor fonte disponível e calcula custo, consumo e saúde da 
 apps/sincrovolt_app/         # app Flutter: só orquestra e apresenta (EVAPP-36)
 packages/sincrovolt_core/    # Dart puro: parser ELM327/PIDs, motor de custos, regras
 tool/setup_env.sh            # bootstrap idempotente Linux (nuvem e CI), versões fixadas
+tool/setup_nuvem.sh          # setup script do ambiente de nuvem (≤ 100 linhas; mesmas versões)
 tool/verificar_ambiente.dart # verifica se o ambiente bate com o que o repo declara
 tool/varrer_segredos.sh      # varredura de segredos (CI e antes de todo PR)
 dados/fixtures/              # logs reais anonimizados (sem GPS, VIN mascarado)

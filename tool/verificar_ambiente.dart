@@ -57,7 +57,9 @@ Future<void> main(List<String> args) async {
   }
 
   final r = _Relatorio();
-  stdout.writeln('SincroVolt — verificação de ambiente${semAndroid ? " (sem Android)" : ""}');
+  stdout.writeln(
+    'SincroVolt — verificação de ambiente${semAndroid ? " (sem Android)" : ""}',
+  );
   stdout.writeln('repo: ${raiz.path}');
   stdout.writeln('so:   ${Platform.operatingSystem}');
   stdout.writeln('');
@@ -127,6 +129,34 @@ _Esperado _lerEsperado(Directory raiz, _Relatorio r) {
         'pin do Flutter',
         '.fvmrc pede ${e.flutter} mas tool/setup_env.sh pina $noSetup — alinhe os dois '
             '(a versão só muda por decisão registrada no board).',
+      );
+    }
+
+    // O tool/setup_nuvem.sh (setup script do ambiente de nuvem, limitado a 100 linhas)
+    // carrega uma cópia das versões. Uma troca de versão que esqueça essa cópia deixaria a
+    // nuvem num Flutter e o resto noutro, em silêncio (EVAPP-74).
+    final nuvem = File('${raiz.path}${sep}tool${sep}setup_nuvem.sh');
+    if (nuvem.existsSync()) {
+      final textoNuvem = nuvem.readAsStringSync();
+      for (final nome in const [
+        'FLUTTER_VERSION',
+        'FLUTTER_SHA256',
+        'FVM_VERSION',
+      ]) {
+        final valorSetup = _constanteShell(texto, nome);
+        final valorNuvem = _constanteShell(textoNuvem, nome);
+        if (valorSetup != valorNuvem) {
+          r.falha(
+            'tool/setup_nuvem.sh',
+            '$nome é "${valorNuvem ?? "?"}" mas tool/setup_env.sh diz "${valorSetup ?? "?"}" '
+                '— alinhe os dois e cole o setup_nuvem.sh de novo no ambiente de nuvem.',
+          );
+        }
+      }
+    } else {
+      r.falha(
+        'tool/setup_nuvem.sh',
+        'ausente — é o setup script do ambiente de nuvem (docs/ambiente.md, seção 1).',
       );
     }
   } else {
@@ -399,7 +429,9 @@ void _verificarPinsDoGradle(_Esperado e, _Relatorio r) {
   // card fixar o valor, trocar este info por ok/falha como o applicationId.
   r.info(
     'minSdk',
-    e.minSdk == null ? 'padrão do Flutter (sem decisão travada)' : '${e.minSdk}',
+    e.minSdk == null
+        ? 'padrão do Flutter (sem decisão travada)'
+        : '${e.minSdk}',
   );
 }
 
