@@ -1,4 +1,4 @@
-// tool/verificar_ambiente.dart — verificador de ambiente de build do Rodovolt.
+// tool/verificar_ambiente.dart — verificador de ambiente de build do SincroVolt.
 //
 // Adaptado do verificador do Desmalha (mesmo modelo de 3 ambientes).
 //
@@ -57,7 +57,9 @@ Future<void> main(List<String> args) async {
   }
 
   final r = _Relatorio();
-  stdout.writeln('Rodovolt — verificação de ambiente${semAndroid ? " (sem Android)" : ""}');
+  stdout.writeln(
+    'SincroVolt — verificação de ambiente${semAndroid ? " (sem Android)" : ""}',
+  );
   stdout.writeln('repo: ${raiz.path}');
   stdout.writeln('so:   ${Platform.operatingSystem}');
   stdout.writeln('');
@@ -129,6 +131,34 @@ _Esperado _lerEsperado(Directory raiz, _Relatorio r) {
             '(a versão só muda por decisão registrada no board).',
       );
     }
+
+    // O tool/setup_nuvem.sh (setup script do ambiente de nuvem, limitado a 100 linhas)
+    // carrega uma cópia das versões. Uma troca de versão que esqueça essa cópia deixaria a
+    // nuvem num Flutter e o resto noutro, em silêncio (EVAPP-74).
+    final nuvem = File('${raiz.path}${sep}tool${sep}setup_nuvem.sh');
+    if (nuvem.existsSync()) {
+      final textoNuvem = nuvem.readAsStringSync();
+      for (final nome in const [
+        'FLUTTER_VERSION',
+        'FLUTTER_SHA256',
+        'FVM_VERSION',
+      ]) {
+        final valorSetup = _constanteShell(texto, nome);
+        final valorNuvem = _constanteShell(textoNuvem, nome);
+        if (valorSetup != valorNuvem) {
+          r.falha(
+            'tool/setup_nuvem.sh',
+            '$nome é "${valorNuvem ?? "?"}" mas tool/setup_env.sh diz "${valorSetup ?? "?"}" '
+                '— alinhe os dois e cole o setup_nuvem.sh de novo no ambiente de nuvem.',
+          );
+        }
+      }
+    } else {
+      r.falha(
+        'tool/setup_nuvem.sh',
+        'ausente — é o setup script do ambiente de nuvem (docs/ambiente.md, seção 1).',
+      );
+    }
   } else {
     r.falha(
       'tool/setup_env.sh',
@@ -137,7 +167,7 @@ _Esperado _lerEsperado(Directory raiz, _Relatorio r) {
   }
 
   final gradle = File(
-    '${raiz.path}${sep}apps${sep}rodovolt_app${sep}android${sep}app${sep}build.gradle.kts',
+    '${raiz.path}${sep}apps${sep}sincrovolt_app${sep}android${sep}app${sep}build.gradle.kts',
   );
   if (gradle.existsSync()) {
     final texto = gradle.readAsStringSync();
@@ -147,7 +177,7 @@ _Esperado _lerEsperado(Directory raiz, _Relatorio r) {
     final min = RegExp(r'minSdk\s*=\s*(\d+)').firstMatch(texto)?.group(1);
     e.minSdk = min == null ? null : int.tryParse(min);
   } else {
-    r.falha('build.gradle.kts', 'ausente em apps/rodovolt_app/android/app/.');
+    r.falha('build.gradle.kts', 'ausente em apps/sincrovolt_app/android/app/.');
   }
 
   return e;
@@ -386,12 +416,12 @@ void _verificarAndroidSdk(_Esperado e, _Relatorio r) {
 void _verificarPinsDoGradle(_Esperado e, _Relatorio r) {
   // Decisões travadas no board. Um `flutter create` futuro, ou um merge desatento,
   // reescreve build.gradle.kts com os padrões do template e rebaixa as duas em silêncio.
-  if (e.applicationId == 'com.rodovolt.app') {
+  if (e.applicationId == 'com.sincrovolt.app') {
     r.ok('applicationId', e.applicationId!);
   } else {
     r.falha(
       'applicationId',
-      'está "${e.applicationId ?? "?"}", esperado "com.rodovolt.app" (decisão travada, EVAPP-20).',
+      'está "${e.applicationId ?? "?"}", esperado "com.sincrovolt.app" (decisão travada, EVAPP-20).',
     );
   }
 
@@ -399,7 +429,9 @@ void _verificarPinsDoGradle(_Esperado e, _Relatorio r) {
   // card fixar o valor, trocar este info por ok/falha como o applicationId.
   r.info(
     'minSdk',
-    e.minSdk == null ? 'padrão do Flutter (sem decisão travada)' : '${e.minSdk}',
+    e.minSdk == null
+        ? 'padrão do Flutter (sem decisão travada)'
+        : '${e.minSdk}',
   );
 }
 

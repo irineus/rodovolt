@@ -1,4 +1,4 @@
-# Rodovolt
+# SincroVolt
 
 App mobile de gestão de carros eletrificados (BEV, PHEV e HEV) no Brasil: anota recargas,
 abastecimentos e manutenção, lê o carro pelo OBD-II (só leitura) e calcula custo, consumo e

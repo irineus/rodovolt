@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.rodovolt.app"
+    namespace = "com.sincrovolt.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -15,7 +15,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.rodovolt.app" // decisão travada (EVAPP-20)
+        applicationId = "com.sincrovolt.app" // decisão travada (EVAPP-20)
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

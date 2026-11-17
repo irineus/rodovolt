@@ -1,4 +1,4 @@
-# Convenções do Rodovolt
+# Convenções do SincroVolt
 
 > **Estado:** provisório. As convenções oficiais são o card **EVAPP-22** (Fase 04), ainda
 > não executado. Aqui está só o que **já foi decidido** em outros cards ou é regra
@@ -13,8 +13,8 @@
 | Commit | Conventional Commits; rodapé com `EVAPP-<n>` | skill do board |
 | PR | Um PR por card; o card só fecha com PR aberto e merge oferecido | CLAUDE.md, regra 6 |
 | Dinheiro | Centavos em `int`. Nunca `double`/float | CLAUDE.md, regra 5 |
-| Pacote do app | `com.rodovolt.app` | EVAPP-20 |
-| Estrutura | `apps/rodovolt_app` (Flutter) + `packages/rodovolt_core` (Dart puro) | EVAPP-24 |
+| Pacote do app | `com.sincrovolt.app` | EVAPP-20 |
+| Estrutura | `apps/sincrovolt_app` (Flutter) + `packages/sincrovolt_core` (Dart puro) | EVAPP-24 |
 | Toolchain | Flutter pinado no `.fvmrc`; comandos sempre via `fvm` | EVAPP-24 |
 | Dependências | Checagem de licença antes de entrar | CLAUDE.md, regra 8 |
 | Fixtures | Sem GPS, VIN mascarado; logs brutos fora do repo | CLAUDE.md, regra 3 |

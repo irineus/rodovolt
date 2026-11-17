@@ -1,15 +1,15 @@
 ---
 name: proximo-card
-description: Avança o board do Rodovolt (app de gestão de carros eletrificados) no Notion — próximo card, iniciar, concluir, bloquear, status do board, criar card. Use para "próximo card", "o que fazer agora", "concluí o card", "status do board" e qualquer pedido de consultar ou atualizar o board deste projeto.
+description: Avança o board do SincroVolt (app de gestão de carros eletrificados) no Notion — próximo card, iniciar, concluir, bloquear, status do board, criar card. Use para "próximo card", "o que fazer agora", "concluí o card", "status do board" e qualquer pedido de consultar ou atualizar o board deste projeto.
 ---
 
-# Board do Rodovolt no Notion
+# Board do SincroVolt no Notion
 
 Versão de repositório da skill de conta `proximo-card-carros-eletrificados`. As duas
 devem dizer a mesma coisa. **Se divergirem, vale esta (versionada no repo)**, salvo o que
 a página Decisões vigentes disser em contrário; avise o usuário da divergência em uma
-linha, para ele atualizar a skill da conta. Ex.: a skill da conta ainda chama o produto de
-"Voltis" (nome superado no EVAPP-20) — use "Rodovolt".
+linha, para ele atualizar a skill da conta. Ex.: a skill da conta pode ainda chamar o
+produto de "Voltis" ou "Rodovolt" (nomes superados no EVAPP-20) — vale "SincroVolt".
 
 Numa sessão aberta fora da pasta do repo, `/proximo-card` não aparece na lista de skills:
 leia este arquivo direto.
@@ -117,8 +117,8 @@ Notion, não escrever palavra entre sinais de menor/maior (vira tag).
 
 ## Nome da sessão
 
-Formato: `Rodovolt · EVAPP-n — <título curto> (<estado>)`, estados `em andamento`,
-`concluído`, `bloqueado`, `parcial`. Sessão sem card: `Rodovolt · <o que foi feito>`.
+Formato: `SincroVolt · EVAPP-n — <título curto> (<estado>)`, estados `em andamento`,
+`concluído`, `bloqueado`, `parcial`. Sessão sem card: `SincroVolt · <o que foi feito>`.
 Renomear com `get_session`/`set_session_title` quando existirem; senão, sugerir o título
 ao usuário em uma linha no fim da resposta.
 

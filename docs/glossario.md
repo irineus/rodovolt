@@ -1,4 +1,4 @@
-# Glossário do Rodovolt
+# Glossário do SincroVolt
 
 > **Estado:** provisório. O glossário oficial (linguagem ubíqua) é o card **EVAPP-21**
 > (Fase 04), ainda não executado. Abaixo, só os termos que **já aparecem em decisões
@@ -28,7 +28,7 @@
 
 | Termo | Significado | Origem |
 |---|---|---|
-| OBD-II | Porta e protocolo de diagnóstico. **Uso só de leitura** no Rodovolt | concepção |
+| OBD-II | Porta e protocolo de diagnóstico. **Uso só de leitura** no SincroVolt | concepção |
 | ELM327 | Chip/adaptador que traduz comandos AT e OBD; o de referência é o KONNWEI v1.5 | EVAPP-6 |
 | PID | Identificador de parâmetro lido do carro (ex.: `01A6` = hodômetro, `9A` = tensão/corrente) | EVAPP-6/7 |
 | Modo 22 | Leitura de dados proprietários por identificador (UDS ReadDataByIdentifier) | EVAPP-7 |
